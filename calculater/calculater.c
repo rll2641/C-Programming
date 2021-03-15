@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
-
 void gotoxy(int x,int y) 
 {
 COORD pos={x,y};
@@ -42,7 +41,7 @@ void calculate()
 {
     int opt,a,b;
     char c;
-    puts("1.µ¡¼À 2.»¬¼À 3.³ª´°¼À ");
+    puts("1.µ¡¼À 2.»¬¼À 3.³ª´°¼À 4.°ö¼À");
     opt=_getch()-'0';
     system("cls");
     if(opt==1){
@@ -55,10 +54,15 @@ void calculate()
         scanf("%d%c%d",&a,&c,&b);
         printf("%d-%d=%d", a,b,a-b);
     }
-    else{
+    else if(opt==3){
         puts("¼ö½ÄÀÔ·Â");
         scanf("%d%c%d",&a,&c,&b);
         printf("%d-%d=%2f", a,b,(double)a/b);
+    }
+    else{
+        puts("¼ö½ÄÀÔ·Â");
+        scanf("%d%c%d",&a,&c,&b);
+        printf("%d*%d=%d", a,b,a*b);
     }
 }
 int main()
