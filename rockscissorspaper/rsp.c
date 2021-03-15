@@ -2,18 +2,26 @@
 #include <stdlib.h>
 #include <time.h>
 #include <conio.h>
-
+#include <windows.h>
+void gotoxy(int x, int y)
+{
+	COORD pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
 void intro() //인트로
 {
-	printf("###################################################\n");
-	printf("###\t\t\t\t\t\t###\n");
-	printf("###\t\t\t\t\t\t###\n");
-	printf("###\t1.게임시작\t\t2.게임종료\t###\n");
-	printf("###\t\t\t\t\t\t###\n");
-	printf("###\t\t\t\t\t\t###\n");
-	printf("###################################################\n");
+	int x = 10, y = 11;
+	system("mode con cols=76 lines=35");
+	SetConsoleTitle(TEXT("가위바위보게임"));
+	gotoxy(x, y); printf("####################################################\n");
+	gotoxy(x, y + 1); printf("###\t\t\t\t\t\t   ###\n");
+	gotoxy(x, y + 2); printf("###\t\t\t\t\t\t   ###\n");
+	gotoxy(x, y + 3); printf("###\t1.게임시작\t2.게임종료\t3.로그열기 ###\n");
+	gotoxy(x, y + 4); printf("###\t\t\t\t\t\t   ###\n");
+	gotoxy(x, y + 5); printf("###\t\t\t\t\t\t   ###\n");
+	gotoxy(x, y + 6); printf("####################################################\n");
 }
-void introinput()
+void menu()
 {
 	int input = 0;
 	while (1)
@@ -29,84 +37,187 @@ void introinput()
 			exit(1);
 			break;
 		}
+		else if (input == 3)
+		{
+			system("log_file.txt");
+		}
 		else
 		{
 			continue;
 		}
 	}
 }
+int userselect()
+{
+	int input;
+	while (1)
+	{
+		printf("가위->0\t바위->1\t보->2\n무엇을 입력하시겠습니까?(숫자로 입력):");
+		input = getchar();
+		getchar();
+		if (input >= '0' && input < '3')
+		{
+			break;
+		}
+		else
+		{
+			puts("잘못입력하셨습니다. 다시입력해주세요.");
+			continue;
+		}
 
-char rcp(int rcp)
+	}
+	if (input == 0)
+		puts("사용자는 가위를 선택하였습니다");
+	else if (input == 1)
+		puts("사용자는 바위를 선택하였습니다");
+	else
+		puts("사용자는 보자기를 선택하였습니다");
+	return input;
+}
+int computerselect()
 {
 	srand((unsigned)time(NULL));
-
-	int computer = rand() % 3;
-
-	printf("컴퓨터의 선택은? %d.\n", computer);
-
-	if (rcp == computer)
-
+	int cs = rand() % 3;
+	if (cs == 0)
+		puts("컴퓨터는 가위를 선택하였습니다");
+	else if (cs == 1)
+		puts("컴퓨터는 바위를 선택하였습니다");
+	else
+		puts("컴퓨터는 보자기를 선택하였습니다");
+	return cs;
+}
+void rsp(int userresult, int computerresult)
+{
+	if (userresult == computerresult)
 	{
-		return 0;
+		puts("비겼습니다");
 	}
-	if (rcp == 0)
+	if (userresult == 0)
 	{
-		if (computer == 1)
+		if (computerresult == 1)
 		{
-			return 1;
+			puts("사용자가 졌습니다");
 		}
-		else
+		if (computerresult == 2)
 		{
-			return 2;
+			puts("사용자가 이겼습니다");
 		}
 	}
-	else if (rcp == 1)
+	else if (userresult == 1)
 	{
-		if (computer == 0)
+		if (computerresult == 0)
 		{
-			return 2;
+			puts("사용자가 이겼습니다");
 		}
-		else
+		if (computerresult == 2)
 		{
-			return 1;
+			puts("사용자가 졌습니다");
 		}
 	}
 	else
 	{
-		if (computer == 0)
+		if (computerresult == 0)
 		{
-			return 1;
+			puts("사용자가 졌습니다");
+		}
+		if (computerresult == 1)
+		{
+			puts("사용자가 이겼습니다");
+		}
+	}
+}
+int tryagain()
+{
+	char again;
+	puts("다시하시겠습니까? Y/N");
+	while (1)
+	{
+		again = _getch();
+		if (again == 'Y' || again == 'y')
+			break;
+		else if (again == 'n' || again == 'N')
+			break;
+		else
+		{
+			puts("잘못입력하셨습니다. 다시입력해주세요.");
+			continue;
+		}
+	}
+	return again;
+}
+void rsp_log_w(int user, int com)
+{
+	FILE* log_file;
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	if (user == com)
+	{
+		log_file = fopen("log_file.txt", "a");
+		fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 비겼습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+		fclose(log_file);
+	}
+	if (user == 0)
+	{
+		if (com == 1)
+		{
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 졌습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
 		}
 		else
 		{
-			return 2;
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 이겼습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
+		}
+	}
+	else if (user == 1)
+	{
+		if (com == 0)
+		{
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 이겼습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
+		}
+		else
+		{
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 졌습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
+		}
+	}
+	else
+	{
+		if (com == 0)
+		{
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 졌습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
+		}
+		else
+		{
+			log_file = fopen("log_file.txt", "a");
+			fprintf(log_file, "%d-%d-%d %d:%d:%d\t사용자는 이겼습니다.\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+			fclose(log_file);
 		}
 	}
 }
 int main()
 {
+	int userresult, computerresult, again;
 	intro();
-	introinput();
-	int input = 0;
-	int result = 0;
-	printf("가위->0\t바위->1\t보->2");
-	printf("무엇을 내실건가요?(숫자로 선택):");
-	scanf("%d", &input);
-	result = rcp(input);
-
-	if (result == 0)
+	menu();
+	while (1)
 	{
-		puts("비겼습니다!");
-		return 0;
+		userresult = userselect();
+		computerresult = computerselect();
+		rsp(userresult, computerresult);
+		rsp_log_w(userresult, computerresult);
+		again = tryagain();
+		if (again == 'Y' || again == 'y')
+			continue;
+		else
+			break;
 	}
-	else if (result == 1)
-	{
-		puts("졌습니다 ㅠㅠ");
-		return 0;
-	}
-	else
-	{
-		puts("이겼습니다!");
-		return 0;
-	}
+	return 0;
 }
