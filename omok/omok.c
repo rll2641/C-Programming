@@ -354,12 +354,14 @@ void play_omok(){
         if(check_win == BLACK_WIN){
             gotoxy(80,6);
             printf("흑돌이 이겼습니다 !");
+            Sleep(3000);
             break;
         }
-        
+
         else if(check_win == WHITE_WIN){
             gotoxy(80,6);
             printf("백돌이 이겼습니다 !");
+            Sleep(3000);
             break;
         }
     }
