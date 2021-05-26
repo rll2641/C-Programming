@@ -7,6 +7,7 @@
 
 // 회원가입시 최대 글자 수
 #define limit 8
+// 시간 선택
 #define hour 1
 #define thour 2
 
@@ -196,5 +197,4 @@ void check_time(){
         }
         system("shutdown -s -t 1");
     }
-
 }
