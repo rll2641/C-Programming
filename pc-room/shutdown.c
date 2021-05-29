@@ -60,7 +60,7 @@ void menu(){
                 system("cls");
                 id2 = login_id();
                 pw2 = login_pw();
-                if(memcmp(id, id2, 8) == 0 && memcmp(pw, pw2, 8) == 0){
+                if(memcmp(id, id2, limit) == 0 && memcmp(pw, pw2, limit) == 0){
                     printf("로그인 중\n");
                     Sleep(2000);
                     printf("회원정보가 일치합니다.\n");
@@ -138,7 +138,8 @@ char *login_pw(){
 
 int select_time(){
 
-    time_t t = time(NULL);
+    time_t t;
+    t = time(NULL);
     struct tm tm = *localtime(&t);
 
     int num;
@@ -155,17 +156,17 @@ int select_time(){
         printf("지금부터 1시간뒤에 자동적으로 컴퓨터가 꺼지게 됩니다.\n");
         printf("현재 시간: %d-%d-%d %d:%d:%d\n", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
         printf("종료 시간: %d-%d-%d %d:%d:%d\n", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour+1, tm.tm_min, tm.tm_sec);
-        Sleep(2000);
+        Sleep(5000);
         system("cls");
         return hour;
     }
-    else{
+    else if (num == 2){
         system("cls");
         printf("2시간 선택완료\n");
         printf("지금부터 2시간뒤에 자동적으로 컴퓨터가 꺼지게 됩니다.\n");
         printf("현재 시간: %d-%d-%d %d:%d:%d\n", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
         printf("종료 시간: %d-%d-%d %d:%d:%d\n", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour+2, tm.tm_min, tm.tm_sec);
-        Sleep(2000);
+        Sleep(5000);
         system("cls");
         return thour;
     }
