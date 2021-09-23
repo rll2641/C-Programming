@@ -1,113 +1,36 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 
-char* input_studentInfor() { 
+typedef struct {
+    char name[10];
+    char major[15];
+    char classof[10];
+    double math,kr,en,avg;
+} Student;
 
-    static char student[30][15]; // ÇÔ¼ö°¡ Á¾·áµÇ´õ¶óµµ ÁÖ¼Ò°¡ À¯ÁöµÉ¼ö ÀÖ°Ô static»ç¿ë
+int main(){
 
-    printf("Â÷·Ê´ë·Î ÀÌ¸§,¼Ò¼Ó,ÇÐ¹ø,±¹¾î,¿µ¾î,¼öÇÐ¼ºÀû ÀÔ·Â\n");
+    Student infor[5];
 
-    for(int i=0; i<30; i++) {  
-        scanf("%s", student[i]);
-
-        if(i == 5 || i == 11 || i == 17 || i == 23) {
-            printf("Â÷·Ê´ë·Î ÀÌ¸§,¼Ò¼Ó,ÇÐ¹ø,±¹¾î,¿µ¾î,¼öÇÐ¼ºÀû ÀÔ·Â\n");
-        }
+    for(int i=0; i<5; i++) { // í•™ìƒì •ë³´ ìž…ë ¥
+        printf("ì°¨ë¡€ëŒ€ë¡œ ì´ë¦„ ì†Œì† í•™ë²ˆ êµ­ì–´ ì˜ì–´ ìˆ˜í•™ì„±ì  ìž…ë ¥\n");
+        scanf("%s %s %s %lf %lf %lf", infor[i].name,infor[i].major,infor[i].classof,
+               &infor[i].kr,&infor[i].en,&infor[i].math);     
     }
 
-    return (char*)student; // ¹ÝÈ¯ÇüÀº 2Â÷¿ø¹è¿­ÀÇ Æ÷ÀÎÅÍÇü
-}
+    for(int i=0; i<5; i++) { // ì ìˆ˜ í‰ê· 
+        infor[i].avg = (infor[i].en + infor[i].kr + infor[i].math) / 3;
+    }
 
-int main() {
-    char (*stuInfor)[15] = (char(*)[15])input_studentInfor(); //stuInforÀº 2Â÷¿ø¹è¿­ÀÇ Æ÷ÀÎÅÍÇü
-    double num[5];  // ÇÐ»ýµéÀÇ Æò±ÕÁ¡¼ö ÀúÀå
-    double sum = 0; // ¼ºÀûÁ¡¼ö ÃÑÇÕ
-    int count = 0;
+    printf("ì´ë¦„\tì†Œì†\t\tí•™ë²ˆ\t\tí‰ì \n");
 
-    for(int i=3; i<30; i++) { // ¹®ÀÚ¿­ ¼Ó¿¡ ÀÖ´Â Á¡¼ö¸¦ ½Ç¼ö·Î º¯È¯
-        if(i > 2 && i <6) {
-            count = 0;
-            sum += atof(stuInfor[i]); // ¹®ÀÚ¿­À» ½Ç¼ö·Î º¯È¯ ÈÄ º¯¼ö¿¡ ÀúÀå
-            if(i == 5) {
-                num[count] = sum;
-                sum = 0;
-            }
-        }
-        if(i > 8 && i <12) {
-            count = 1;
-            sum += atof(stuInfor[i]);
-            if(i == 11) {
-                num[count] = sum;
-                sum = 0;
-            }
-        }
-        if(i > 14 && i <18) {
-            count = 2;
-            sum += atof(stuInfor[i]);
-            if(i == 17){
-                num[count] = sum;
-                sum = 0;
-            }
-        }
-        if(i > 20 && i <24) {
-            count = 3;
-            sum += atof(stuInfor[i]);
-            if(i == 23){
-                num[count] = sum;
-                sum = 0;
-            }
-        }
-        if(i > 26 && i< 30) {
-            count = 4;
-            sum += atof(stuInfor[i]);
-            if(i == 29){
-                num[count] = sum;
-            }
-        }
-    } 
-
-    printf("ÀÌ¸§\t¼Ò¼Ó\t\tÇÐ¹ø\t\tÆòÁ¡\n");
-
-    for(int i=0; i<30; i++) { // ¸ð´ÏÅÍ Ãâ·Â
-        if(i >= 0 && i <3) {
-            printf("%s\t", stuInfor[i]);
-        }
-        if(i == 3) {
-            count = 0;
-            printf("%.2f\n", num[count]/3);
-        } 
-        if(i >5 && i <9) {
-            printf("%s\t", stuInfor[i]);
-        }
-        if(i == 9) {
-            count =1;
-            printf("%.2f\n", num[count]/3);
-        }
-        if(i >11 && i<15) {
-            printf("%s\t", stuInfor[i]);
-        }
-        if(i == 15) {
-            count =2;
-            printf("%.2f\n", num[count]/3);
-        }
-        if(i >17 && i<21) {
-            printf("%s\t", stuInfor[i]);
-        }
-        if(i == 21) {
-            count =3;
-            printf("%.2f\n", num[count]/3);
-        }
-        if(i > 23 && i<27) {
-            printf("%s\t", stuInfor[i]);
-        }
-        if(i == 27) {
-            count=4;
-            printf("%.2f\n", num[count]/3);
-        }
+    for(int i=0; i<5; i++) {
+        printf("%s\t%s\t%s\t%.2f\n", infor[i].name,infor[i].major,infor[i].classof,
+        infor[i].avg);
     }
 
     _getch();
     
     return 0;
+
 }
